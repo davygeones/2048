@@ -7,7 +7,7 @@ nav_order: 2
 # Project 0: 2048
 {: .no_toc }
 
-[cite_start]**Deadline: Monday, February 3rd, 11:59 PM PT.** [cite: 6]
+**Deadline: Monday, February 3rd, 11:59 PM PT.**
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -17,105 +17,72 @@ nav_order: 2
 
 ---
 
-## Hard Mode Project
-[cite_start]If you are a strong programmer, you might be interested in the hard mode version of this project[cite: 7, 8]. [cite_start]In the hard mode version, you'll solve the same problem as the standard version of this project, but there will be no handholding and you'll have to come up with the design yourself[cite: 9]. [cite_start]There is no extra credit for completing the hard mode version instead of the standard version[cite: 10].
-
-## FAQ
-[cite_start]Each assignment will have an FAQ linked at the top[cite: 12]. [cite_start]You can also access it by adding `/faq` to the end of the URL[cite: 13]. [cite_start]The FAQ for Project 0 is located here[cite: 14]. 
-
-> Note that this project has limited submission tokens. [cite_start]Please see Submission and Grading for more details[cite: 15].
-
 ## Overview
-[cite_start]In this mini-project, you'll get some practice with Java by creating a playable game of 2048[cite: 24]. [cite_start]We've already implemented the graphics and user interaction code for you, so your job is to implement the logic of the game[cite: 24]. [cite_start]We've set everything up so that you don't need to open any of the files except for `GameLogic.java`, though you're welcome to browse[cite: 33].
-
-### Using Git
-[cite_start]It is important that you commit work to your repository at frequent intervals[cite: 35]. [cite_start]The command `git status` will tell you what files you have modified, removed, or possibly added since the last commit[cite: 38].
-
-| Command | Description |
-| :--- | :--- |
-| `git status` | [cite_start]To see what needs to be added or committed. |
-| `git add <file or folder path>` | [cite_start]To add, or stage, any modified files. |
-| `git commit -m "Commit message"` | To commit changes. [cite_start]Use a descriptive message. |
-| `git push origin main` | [cite_start]Reflect your local changes on GitHub so Gradescope can see them. |
+In this project, you will implement the core logic of the game 2048. We have provided the graphics and user interaction code; your job is to handle the tile movement and merging rules in `GameLogic.java`. 
 
 ## 2048 Rules: Basic Rules
-* [cite_start]2048 is played on a grid of squares[cite: 46].
-* [cite_start]The player chooses a direction (using the arrow keys) to tilt the board: north, south, east, or west[cite: 51].
-* [cite_start]All tiles slide in that direction until there is no empty space left[cite: 52].
-* [cite_start]As a tile slides, it can possibly merge with another tile with the same number[cite: 53].
-* [cite_start]After each tilt, a single randomly generated tile (value 2 or 4) will be added to the board on an empty square[cite: 57, 58].
-* [cite_start]The game ends when the player has no available moves or forms a square containing 2048[cite: 61].
+* **The Grid:** Played on a square grid. Each square is empty or contains a numbered tile.
+* **Tilting:** The player tilts the board North, South, East, or West. All tiles slide until they hit an edge or another tile.
+* **Merging:** When two tiles of the same value collide, they merge into one tile with double the value.
+* **Ending:** The game ends when there are no available moves or a tile reaches the value 2048.
 
 ## Setup
 ### File Structure
-[cite_start]The `proj0` folder is separated into two packages, `game2048logic` and `game2048rendering`[cite: 74].
-
-
-* [cite_start]**`game2048logic`**: Contains logic files like `GameLogic.java` and `MatrixUtils.java`[cite: 83, 84, 86].
-* [cite_start]**`game2048rendering`**: Contains rendering files like `Board.java`, `Main.java`, `Side.java`, and `Tile.java`[cite: 87, 88, 90, 91, 92].
-
-> [cite_start]**INFO**: You will only need to read and modify the `game2048logic/GameLogic.java` file[cite: 94]. [cite_start]Changes to other files will not be recognized by Gradescope[cite: 95].
-
-### Running the Game
-[cite_start]You can run your game by running the `Main.java` file in the `game2048rendering` package[cite: 98]. [cite_start]Right-click the file and select **"Run 'Main.main()'"**[cite: 99].
+The project is organized into two packages:
+* **`game2048logic`**: Contains `GameLogic.java` (the only file you edit) and `MatrixUtils.java`.
+* **`game2048rendering`**: Contains the GUI code (Board, Main, Side, Tile).
 
 ---
 
 ## Task 1: Understanding Tilts
-Before implementing, understand the merging rules:
-1. [cite_start]Two tiles of the same value merge into one tile containing double the initial number[cite: 152].
-2. [cite_start]A tile that is the result of a merge will not merge again on that tilt[cite: 153].
-3. [cite_start]When three adjacent tiles of the same number move, the leading two tiles merge, and the trailing tile does not[cite: 156].
-4. [cite_start]Four adjacent tiles with the same number form two merged tiles (e.g., [4, 4, 4, 4] becomes [8, 8, X, X])[cite: 161, 162].
+![2048 Tilting Animation](/img/2048-example.gif)
+The animation above shows a few tilt operations. Here are the full rules for when merges occur that are shown in the image above.
+1. Two tiles of the same value merge into one tile with double the value.
+2. **No Double Merges:** A tile that is the result of a merge will not merge again on that same tilt.
+3. **Leading Merge:** If three adjacent tiles have the same value, the leading two tiles merge first.
+4. **Double Pairs:** Four identical adjacent tiles will form two separate merged tiles (e.g., [4, 4, 4, 4] → [8, 8, X, X]).
 
 ## Task 2: Move Tile Up (No Merging)
-[cite_start]Implement `moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR)`[cite: 190].
-* [cite_start]Move the tile at `(r, c)` as far up as possible[cite: 192].
-* [cite_start]Ignore the `minR` parameter and merges for this task[cite: 193, 195].
+Implement `moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR)`.
+* Move the tile at `(r, c)` as far North as possible. 
+* For this task, ignore the `minR` parameter and all merging rules.
 
 ## Task 3: Merging Tiles
-[cite_start]Modify `moveTileUpAsFarAsPossible` to handle merges[cite: 433].
-* [cite_start]If a merge occurs, return $1 + row\_number$ where the merge happened[cite: 436].
-* [cite_start]If no merge occurs, return $0$[cite: 437].
+Modify `moveTileUpAsFarAsPossible` to handle merges. 
+* **Return Value:** If a merge occurs, return $1 + row\_index$ of the merge. If no merge occurs, return $0$.
 
 ## Task 4: Merging Tiles up to MinR
-[cite_start]Modify `moveTileUpAsFarAsPossible` so that the tile is not allowed to move any higher than the row given by `minR`[cite: 482].
+Update the method to respect the `minR` parameter. Tiles cannot move to or merge with a row higher than `minR`.
 
 ## Task 5: Tilt Column
-[cite_start]Implement `tiltColumn(int[][] board, int x)` to tilt an entire column upwards[cite: 526, 527].
-* [cite_start]Use `moveTileUpAsFarAsPossible` as a helper method[cite: 529].
-* [cite_start]Use the return value of the helper to update `minR` and avoid double merges[cite: 531].
+Implement `tiltColumn(int[][] board, int x)`. 
+* Tilt the entire column `x` upward.
+* Use `moveTileUpAsFarAsPossible` as a helper. Update `minR` based on the return value to prevent illegal double merges.
 
 ## Task 6: Tilt Up
-[cite_start]Implement `tiltUp(int[][] board)` to tilt the entire board north[cite: 580, 581]. [cite_start]This calls `tiltColumn` for every column on the board[cite: 178].
+Implement `tiltUp(int[][] board)` to tilt the entire board North by calling `tiltColumn` for every column.
 
 ## Task 7: Tilt in Four Directions
-[cite_start]Implement the general `tilt(int[][] board, Side side)` method[cite: 597].
-* [cite_start]Instead of writing four separate move functions, use the provided `rotateLeft` and `rotateRight` methods to rotate the board, tilt it up, and rotate it back[cite: 589, 596].
+Implement the general `tilt(int[][] board, Side side)` method. 
+* Use the provided `rotateLeft` and `rotateRight` methods to rotate the board so that you can reuse your "Tilt Up" logic for any direction.
 
 ---
 
-## Testing
-* [cite_start]**Unit Tests**: Run `TestTask2.java`, `TestTask3.java`, etc., to test functions in isolation[cite: 234, 479, 602].
-* [cite_start]**Integration Tests**: Run `TestIntegration.java` to test how different functions interact[cite: 600, 602].
-
-## Style
-[cite_start]You must follow the CS 61B Style Guide[cite: 608]. [cite_start]You can check your style locally with the provided plugin[cite: 609].
-
-## Submission and Grading
+## Testing and Grading
 ### Velocity Limiting
 {: .warning }
-[cite_start]For this project, we will be limiting submissions to the autograder[cite: 616]. [cite_start]You will get **4 submission "tokens"** that each regenerate after **24 hours**[cite: 617].
+Submissions are limited. You receive **4 submission tokens** that regenerate every **24 hours**. Test your code locally using the provided JUnit tests (e.g., `TestTask2.java`) before submitting to Gradescope.
 
 ### Grading Breakdown
 | Category | Weight |
 | :--- | :--- |
-| TestTask2 | [cite_start]15% [cite: 628] |
-| TestTask3 | [cite_start]20% [cite: 629] |
-| TestTask4 | [cite_start]20% [cite: 630] |
-| TestTask5 | [cite_start]8% [cite: 631] |
-| TestTask6 | [cite_start]4% [cite: 632] |
-| TestTask7 | [cite_start]8% [cite: 633] |
-| TestIntegration | [cite_start]25% [cite: 634] |
+| TestTask2 | 15% |
+| TestTask3 | 20% |
+| TestTask4 | 20% |
+| TestTask5 | 8% |
+| TestTask6 | 4% |
+| TestTask7 | 8% |
+| TestIntegration | 25% |
 
-[cite_start]There are no hidden tests; the score you see on Gradescope is your final score[cite: 637].
+---
+*Content adapted from the [UC Berkeley CS 61B Spring 2025 Project 0 Specification](https://sp25.datastructur.es/projects/proj0/).*
