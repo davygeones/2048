@@ -5,12 +5,13 @@ parent: "2048"
 nav_order: 2
 ---
 
-# Release
+# Play the game!
 {: .no_toc }
+
+## Access to the game
+To access the latest version of the game...
 
 ## Release Notes
 
 Information about releases and updates.
 
-## Access to the game
-To access the latest version of the game...
