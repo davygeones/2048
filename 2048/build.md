@@ -2,7 +2,7 @@
 layout: default
 title: "Build the Game"
 parent: "2048"
-nav_order: 2
+nav_order: 1
 ---
 
 # Project 0: 2048
