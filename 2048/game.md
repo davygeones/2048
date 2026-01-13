@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Play the game!"
+title: "Play the game"
 parent: "2048"
 nav_order: 2
 ---
